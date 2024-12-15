@@ -246,6 +246,21 @@ where
         self.write_command(Command::WakeUp).ok();
     }
 
+    /// Set the duration of the initial period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    pub fn set_automatic_self_calibration_initial_period(&mut self) -> Result<(), Error<E>> {
+        Ok(())
+    }
+
+    /// Get the duration of the initial period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    pub fn get_automatic_self_calibration_initial_period(&mut self) -> Result<u16, Error<E>> {
+        let mut buf = [0; 3];
+        self.delayed_read_cmd(Command::GetAutomaticSelfCalibrationInitialPeriod, &mut buf)?;
+        let asc_initial_period = u16::from_be_bytes([buf[0], buf[1]]);
+        Ok(asc_initial_period)
+    }
+
     /// Command for reading values from the sensor
     fn delayed_read_cmd(&mut self, cmd: Command, data: &mut [u8]) -> Result<(), Error<E>> {
         self.write_command(cmd)?;

@@ -59,6 +59,18 @@ pub enum Command {
     /// Wake up sensor from sleep mode to idle mode.
     #[cfg(feature = "scd41")]
     WakeUp,
+    /// Set the duration of the initial period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    SetAutomaticSelfCalibrationInitialPeriod,
+    /// Get the duration of the initial period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    GetAutomaticSelfCalibrationInitialPeriod,
+    /// Set the standard period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    SetAutomaticSelfCalibrationStandardPeriod,
+    /// Get the standard period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    GetAutomaticSelfCalibrationStandardPeriod,
 }
 
 impl Command {
@@ -93,6 +105,14 @@ impl Command {
             Self::PowerDown => (0x36E0, 1, false),
             #[cfg(feature = "scd41")]
             Self::WakeUp => (0x36F6, 20, false),
+            #[cfg(feature = "scd41")]
+            Self::SetAutomaticSelfCalibrationInitialPeriod => (0x2445, 1, false),
+            #[cfg(feature = "scd41")]
+            Self::GetAutomaticSelfCalibrationInitialPeriod => (0x2340, 1, false),
+            #[cfg(feature = "scd41")]
+            Self::SetAutomaticSelfCalibrationStandardPeriod => (0x244e, 1, false),
+            #[cfg(feature = "scd41")]
+            Self::GetAutomaticSelfCalibrationStandardPeriod => (0x234b, 1, false),
         }
     }
 }
