@@ -248,7 +248,8 @@ where
 
     /// Set the duration of the initial period for ASC correction (in hours).
     #[cfg(feature = "scd41")]
-    pub fn set_automatic_self_calibration_initial_period(&mut self) -> Result<(), Error<E>> {
+    pub fn set_automatic_self_calibration_initial_period(&mut self, asc_initial_period: u16) -> Result<(), Error<E>> {
+        self.write_command_with_data(Command::SetAutomaticSelfCalibrationInitialPeriod, asc_initial_period)?;
         Ok(())
     }
 
@@ -259,6 +260,22 @@ where
         self.delayed_read_cmd(Command::GetAutomaticSelfCalibrationInitialPeriod, &mut buf)?;
         let asc_initial_period = u16::from_be_bytes([buf[0], buf[1]]);
         Ok(asc_initial_period)
+    }
+
+    /// Set the standard period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    pub fn set_automatic_self_calibration_standard_period(&mut self, asc_standard_period: u16) -> Result<(), Error<E>> {
+        self.write_command_with_data(Command::SetAutomaticSelfCalibrationStandardPeriod, asc_standard_period)?;
+        Ok(())
+    }
+
+    /// Get the standard period for ASC correction (in hours).
+    #[cfg(feature = "scd41")]
+    pub fn get_automatic_self_calibration_standard_period(&mut self) -> Result<u16, Error<E>> {
+        let mut buf = [0; 3];
+        self.delayed_read_cmd(Command::GetAutomaticSelfCalibrationStandardPeriod, &mut buf)?;
+        let asc_standard_period = u16::from_be_bytes([buf[0], buf[1]]);
+        Ok(asc_standard_period)
     }
 
     /// Command for reading values from the sensor
